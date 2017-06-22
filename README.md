@@ -1,2 +1,2 @@
-# vimrc
+# .vimrc
 My vim settings
