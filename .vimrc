@@ -18,7 +18,6 @@
 " 	-> Status line
 " 	-> Shortcut mappings
 " 	-> Searching
-" 	-> Helper functions
 " 
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 
@@ -28,20 +27,20 @@
 " MacVim clipboard
 set clipboard=unnamed
 
-" Sets how many lines of history VIM has to remember
+" Remember 500 lines of : history
 set history=500
 
 " Detect file type and intend it accordingly
 filetype plugin on
 filetype indent on
 
-" Set to auto read when a file is changed from the outside
+" Reload files when changed outside
 set autoread
 
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " => User interface
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-" Set 7 lines to the cursor - when moving vertically using j/k
+" Keep 2 lines around cursor when moving up/down
 set so=2
 
 " Keep selection after shift identing
@@ -51,7 +50,7 @@ set so=2
 " Complete : commands
 set wildmenu
 
-" Ignore compiled files
+" Don't complete some files
 set wildignore=*.o,*~,*.pyc,*/.git/*,*/.hg/*,*/.svn/*,*/.DS_Store
 
 " Wrap left and right at end of lines
@@ -63,10 +62,10 @@ set whichwrap+=<,>,h,l,[,]
 " Syntax highlighting
 syntax on
 
-" Set the font in the GUI
+" Set the font in MacVim
 set guifont=Meslo\ LG\ L\ DZ\ Regular\ for\ Powerline:h12
 
-" Set utf8 as standard encoding and en_US as the standard language
+" Use utf8 encoding
 set encoding=utf8
 
 " Unix EOL
@@ -75,12 +74,12 @@ set ffs=unix,dos,mac
 " Highlight column 81
 set colorcolumn=81
 
-" Show matching brackets when text indicator is over them
+" Highlight matching brackets under cursor
 set showmatch 
-" How many tenths of a second to blink when matching brackets
+" Cursor blinking speed at matching brackets
 set mat=2
 
-" Add a bit extra margin to the left
+" Add a margin to the left to show folding indicator
 set foldcolumn=1
 
 " Height of the command bar
@@ -135,7 +134,7 @@ if has("autocmd")
     autocmd BufWritePre *.txt,*.js,*.py,*.wiki,*.sh,*.coffee :call CleanExtraSpaces()
 endif
 
-" Return to last edit position when opening files (You want this!)
+" Return to last edit position when opening files
 au BufReadPost * if line("'\"") > 1 && line("'\"") <= line("$") | exe "normal! g'\"" | endif
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
@@ -146,6 +145,13 @@ set laststatus=2
 
 " Format the status line
 set statusline=\ %{HasPaste()}%F%m%r%h\ %w\ \ CWD:\ %r%{getcwd()}%h\ \ \ Line:\ %l\ \ Column:\ %c
+" Returns true if paste mode is enabled
+function! HasPaste()
+    if &paste
+        return 'PASTE MODE  '
+    endif
+    return ''
+endfunction
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " => Shortcut mappings
@@ -177,13 +183,9 @@ set incsearch
 " For regular expressions search
 set magic
 
-"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-" => Helper functions
-""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-" Returns true if paste mode is enabled
-function! HasPaste()
-    if &paste
-        return 'PASTE MODE  '
-    endif
-    return ''
-endfunction
+" 
+set guioptions+=e
+set showtabline=2
+
+" 
+execute pathogen#infect()
